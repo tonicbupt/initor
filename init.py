@@ -213,8 +213,7 @@ def parse_args():
     return options, args
 
 
-def main():
-    config, _ = parse_args()
+def main(config):
     set_hostname(config)
     install_docker_agent(config)
     init_kernel()
@@ -222,6 +221,7 @@ def main():
 
 
 if __name__ == '__main__':
+    config, _ = parse_args()
     print '---> starting initializing ...'
-    main()
+    main(config)
     print '---> initializing done'
