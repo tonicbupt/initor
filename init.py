@@ -10,7 +10,12 @@ import shutil
 import socket
 import subprocess
 import tempfile
+from datetime import datetime
 from optparse import OptionParser
+
+
+def now():
+    return datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
 
 def call_command(cmd):
@@ -123,7 +128,7 @@ def install_docker_agent(config):
 
     # generate docker tls files
     print '---> generate docker tls certs ...'
-    generate_certs(config.ip, config.hostname)
+    generate_certs(config)
     print '---> generate docker tls certs done'
 
     # generate docker and eru-agent config file
@@ -193,9 +198,13 @@ def init_kernel():
     with open('templates/kernel.tmpl') as f:
         tmpl = f.read()
         content = tmpl.format(min_tcp_mem=min_tcp_mem, mid_tcp_mem=mid_tcp_mem, max_tcp_mem=max_tcp_mem)
-        make_file('/etc/systcl.d/eru.conf', content)
+        shutil.copy('/etc/sysctl.conf', '/etc/sysctl.conf.backup.%s' % now())
+        make_file('/etc/sysctl.conf', content)
 
-    shutil.copy('templates/ulimit.tmpl', '/etc/security/limits.d/eru.conf')
+    call_command('sysctl -p')
+
+    shutil.copy('/etc/security/limits.conf', '/etc/sysctl.conf.backup.%s' % now())
+    shutil.copy('templates/ulimit.tmpl', '/etc/security/limits.conf')
     print '---> init kernel parameters done'
 
 
