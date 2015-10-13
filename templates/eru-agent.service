@@ -1,0 +1,17 @@
+[Unit]
+Description=Eru Agent
+Documentation=Eru Agent
+After=network.target
+Wants=docker.service
+
+[Service]
+Type=notify
+Environment=GOTRACEBACK=crash
+ExecStart=/usr/local/bin/eru-agent -c /etc/eru-agent/agent.yaml
+LimitNOFILE=1048576
+LimitNPROC=1048576
+LimitCORE=infinity
+MountFlags=slave
+
+[Install]
+WantedBy=multi-user.target

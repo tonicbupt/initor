@@ -1,0 +1,39 @@
+hostname: {config.hostname}
+pidfile: /var/run/agent.pid
+
+eru:
+  endpoint: http://{config.endpoint}:5000
+
+docker:
+  endpoint: tcp://127.0.0.1:2376
+  cert: /root/.docker/cert.pem
+  key: /root/.docker/key.pem
+  ca: /root/.docker/ca.pem
+  health: 30
+
+lenz:
+  forwards:
+    - udp://{config.logstash}:50433
+  stdout: False
+  count: {config.lenz_count}
+
+metrics:
+  step: 30
+  timeout: 1000
+  transfers:
+    - @transfers:8433
+
+vlan:
+  physical:
+    - {physical}
+
+redis:
+  host: {config.redis_host}
+  port: {config.redis_port}
+  min: 5
+  max: 100
+
+api:
+  http: true
+  pubsub: true
+  addr: 0.0.0.0:12345
