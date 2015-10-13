@@ -138,9 +138,19 @@ def install_docker_agent(config):
         'key': os.path.join(DOCKER_SERVER_TLS_PATH, 'server-key.pem'),
         'registry': config.registry,
     }
+
+    _metrics = (
+        'metrics\n'
+        '  step: 30\n'
+        '  timeout: 1000\n'
+        '  transfers:\n'
+    )
+    for tran in config.transfer.split(','):
+        _metrics += '    - %s:8433\n' % tran
     eru_agent_config = {
         'config': config,
         'physical': get_interface_name(config.ip),
+        'metrics': _metrics,
     }
 
     make_docker_config(docker_config)
@@ -218,6 +228,7 @@ def parse_args():
     parser.add_option('-r', '--redis-host', dest='redis_host', default='localhost')
     parser.add_option('-p', '--redis-port', dest='redis_port', type='int', default=6379)
     parser.add_option('-g', '--registry', dest='registry', default='')
+    parser.add_option('-t', '--transfer', dest='transfer', default='', help='use `,` to split multi ips')
     options, args = parser.parse_args()
     return options, args
 
