@@ -140,7 +140,7 @@ def install_docker_agent(config):
     }
 
     _metrics = (
-        'metrics\n'
+        'metrics:\n'
         '  step: 30\n'
         '  timeout: 1000\n'
         '  transfers:\n'
