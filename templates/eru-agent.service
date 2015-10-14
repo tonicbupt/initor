@@ -5,7 +5,7 @@ After=network.target
 Wants=docker.service
 
 [Service]
-Type=notify
+Type=simple
 Environment=GOTRACEBACK=crash
 ExecStart=/usr/local/bin/eru-agent -c /etc/eru-agent/agent.yaml
 LimitNOFILE=1048576
