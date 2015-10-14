@@ -177,6 +177,7 @@ def generate_certs(config):
         call_command('%s %s %s' % (builder, config.ip, os.getcwd()))
 
         # copy server side certs
+        make_dir(os.path.dirname(DOCKER_SERVER_TLS_PATH))
         make_dir(DOCKER_SERVER_TLS_PATH)
         [shutil.copy(cert, os.path.join(DOCKER_SERVER_TLS_PATH, cert)) for cert in ('ca.pem', 'server-key.pem', 'server-cert.pem')]
 
