@@ -213,7 +213,7 @@ def init_kernel():
 
     call_command('sysctl -p')
 
-    shutil.copy('/etc/security/limits.conf', '/etc/sysctl.conf.backup.%s' % now())
+    shutil.copy('/etc/security/limits.conf', '/etc/security/limits.conf.backup.%s' % now())
     shutil.copy('templates/ulimit.tmpl', '/etc/security/limits.conf')
     print '---> init kernel parameters done'
 
