@@ -2,6 +2,7 @@
 # coding: utf-8
 
 import os
+import sys
 import array
 import errno
 import fcntl
@@ -219,15 +220,27 @@ def init_kernel():
     print '---> init kernel parameters done'
 
 
+def register_host(config):
+    addr = '%s:2376' % config.ip
+    pod_name = config.pod_name
+    ca = os.path.join(DOCKER_CLIENT_TLS_PATH, 'ca.pem')
+    key = os.path.join(DOCKER_CLIENT_TLS_PATH, 'key.pem')
+    cert = os.path.join(DOCKER_CLIENT_TLS_PATH, 'cert.pem')
+    url = 'http://%s/api/sys/host/create'
+    cmd = 'curl -F addr=%s -F pod_name=%s -F ca=@%s -F key=@%s -F cert=@%s %s'
+    cmd = cmd % (addr, pod_name, ca, key, cert, url)
+
+
 def parse_args():
     parser = OptionParser()
     parser.add_option('-i', '--ip', dest='ip', default='127.0.0.1')
     parser.add_option('-n', '--hostname', dest='hostname', default='localhost')
-    parser.add_option('-e', '--endpoint', dest='endpoint', default='localhost')
+    parser.add_option('-e', '--endpoint', dest='endpoint', default='localhost:5000')
     parser.add_option('-l', '--logstash', dest='logstash', default='localhost')
     parser.add_option('-c', '--lenz-count', dest='lenz_count', type='int', default=20)
     parser.add_option('-r', '--redis-host', dest='redis_host', default='localhost')
     parser.add_option('-p', '--redis-port', dest='redis_port', type='int', default=6379)
+    parser.add_option('-o', '--podname', dest='pod_name', default='')
     parser.add_option('-g', '--registry', dest='registry', default='')
     parser.add_option('-t', '--transfer', dest='transfer', default='', help='use `,` to split multi ips')
     options, args = parser.parse_args()
@@ -239,10 +252,15 @@ def main(config):
     install_docker_agent(config)
     init_kernel()
     init_service()
+    register_host(config)
 
 
 if __name__ == '__main__':
     config, _ = parse_args()
+    if ':' not in config.endpoint:
+        print 'eru-core endpoint is formatted like localhost:5000, do not forget port'
+        sys.exit(-1)
+
     print '---> starting initializing ...'
     main(config)
     print '---> initializing done'
