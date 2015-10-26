@@ -208,6 +208,8 @@ def init_kernel():
     mid_tcp_mem = int(total_mem_kb * 0.7 / 4)
     min_tcp_mem = int(total_mem_kb * 0.2 / 4)
 
+    call_command('modprobe nf_conntrack')
+
     with open('templates/kernel.tmpl') as f:
         tmpl = f.read()
         content = tmpl.format(min_tcp_mem=min_tcp_mem, mid_tcp_mem=mid_tcp_mem, max_tcp_mem=max_tcp_mem)
