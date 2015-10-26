@@ -229,7 +229,7 @@ def register_host(config):
     ca = os.path.join(DOCKER_CLIENT_TLS_PATH, 'ca.pem')
     key = os.path.join(DOCKER_CLIENT_TLS_PATH, 'key.pem')
     cert = os.path.join(DOCKER_CLIENT_TLS_PATH, 'cert.pem')
-    url = 'http://%s/api/sys/host/create'
+    url = 'http://%s/api/sys/host/create' % config.endpoint
     cmd = 'curl -F addr=%s -F pod_name=%s -F ca=@%s -F key=@%s -F cert=@%s %s'
     cmd = cmd % (addr, pod_name, ca, key, cert, url)
 
