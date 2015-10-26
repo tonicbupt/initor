@@ -232,6 +232,7 @@ def register_host(config):
     url = 'http://%s/api/sys/host/create' % config.endpoint
     cmd = 'curl -F addr=%s -F pod_name=%s -F ca=@%s -F key=@%s -F cert=@%s %s'
     cmd = cmd % (addr, pod_name, ca, key, cert, url)
+    call_command(cmd)
 
 
 def parse_args():
