@@ -117,6 +117,7 @@ DOCKER_CLIENT_TLS_PATH = '/root/.docker'
 def install_docker_agent(config):
     # install docker and eru-agent rpm package
     print '---> install docker / eru-agent rpm packages ...'
+    call_command('yum -y install device-mapper-libs.x86_64')
     call_command('yum -y install rpms/docker-latest.rpm')
     call_command('yum -y install rpms/eru-agent-latest.rpm')
     print '---> install docker / eru-agent rpm packages done' 
