@@ -235,6 +235,12 @@ def register_host(config):
     call_command(cmd)
 
 
+def set_journald():
+    call_command('mkdir /var/log/journal')
+    call_command('systemd-tmpfiles --create --prefix /var/log/journal')
+    call_command('systemctl restart systemd-journald')
+
+
 def parse_args():
     parser = OptionParser()
     parser.add_option('-i', '--ip', dest='ip', default='127.0.0.1')
@@ -253,6 +259,7 @@ def parse_args():
 
 def main(config):
     set_hostname(config)
+    set_journald()
     install_docker_agent(config)
     init_kernel()
     init_service()
