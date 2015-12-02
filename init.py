@@ -2,7 +2,6 @@
 # coding: utf-8
 
 import os
-import sys
 import array
 import errno
 import fcntl
@@ -268,10 +267,6 @@ def main(config):
 
 if __name__ == '__main__':
     config, _ = parse_args()
-    if ':' not in config.endpoint:
-        print 'eru-core endpoint is formatted like localhost:5000, do not forget port'
-        sys.exit(-1)
-
     print '---> starting initializing ...'
     main(config)
     print '---> initializing done'
