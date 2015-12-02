@@ -1,6 +1,8 @@
 initor
 ======
 
+Replace your rpms in dir `rpms`
+
 
 `python init.py -h`
 
